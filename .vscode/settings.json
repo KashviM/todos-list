@@ -1,0 +1,7 @@
+{
+    "emmet.optimizeStylesheetParsing": true,
+    "emmet.showSuggestionsAsSnippets": true,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    }
+}

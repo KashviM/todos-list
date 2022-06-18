@@ -1,42 +1,84 @@
 import './App.css';
 import Header from "./components/Header.js";
-import {Todos} from "./components/Todos";
-import {AddTodo} from "./components/AddTodo";
-import {Footer} from "./components/Footer";
-import React, { useState } from 'react';
+import { Todos } from "./components/Todos";
+import { AddTodo } from "./components/AddTodo";
+import { Footer } from "./components/Footer";
+import { About } from "./components/About";
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 function App() {
-  // let Myvar = 2468 ;
-  
-    // jsx: javascript syntax extension
-    const onDelete = (todo)=>{
-      console.log("I am on delete",todo);
+  let initTodo;
+  if (localStorage.getItem("todos") === null) {
+    initTodo = [];
+  }
+  else {
+    initTodo = JSON.parse(localStorage.getItem("todos"));
+  }
 
-      setTodos(todos.filter((e)=>{
-        return e!==todo;
-      }));
+
+  const onDelete = (todo) => {
+    // console.log("I am ondelete of todo", todo)
+    // Deleting this way in react does not work
+    // let index = todos.indexOf(todo);
+    // todos.splice(index, 1);
+
+    setTodos(todos.filter((e) => {
+      return e !== todo;
+    }));
+    // console.log("deleted", todos)
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }
+
+  const addTodo = (title, desc) => {
+    // console.log("I am adding this todo", title, desc)
+    let sno;
+    if (todos.length === 0) {
+      sno = 0;
     }
-    const [todos, setTodos] = useState([
-       {
-         sno: 1,
-         title:"Market",
-         desc:"Buy Garlin and Onion"        
-       },
-       {
-         sno: 2,
-         title:"Mall",
-         desc:"Buy Clothes"        
-       },
-       {
-         sno: 3,
-         title:"Study",
-         desc:"Study DSA"        
-       },
-      ]);
-    return (
-      <>
-      <Header title="Kashvi's todos" searchbar={false}/>
-      <Todos todos={todos} onDelete={onDelete}/>
-      <Footer/>
+    else {
+      sno = todos[todos.length - 1].sno + 1;
+    }
+    const myTodo = {
+      sno: sno,
+      title: title,
+      desc: desc,
+    }
+    setTodos([...todos, myTodo]);
+    // console.log(myTodo);
+  }
+
+  const [todos, setTodos] = useState(initTodo);
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos])
+  return (
+    <>
+      <Router>
+        <Header title="Kashvi's todos" searchbar={false} />
+        <Routes>
+          {/* <Route path='/'  element={() => {
+            return (
+              <>
+              
+              <AddTodo addTodo={addTodo} />
+              <Todos todos={todos} onDelete={onDelete} />
+              </>
+            )
+          }}> */}
+          <Route path="/" element={<><AddTodo addTodo={addTodo}/> <Todos todos={todos} onDelete={onDelete} /></>}>
+          </Route>
+          {/* <Route path="/" element={<Todos todos={todos} onDelete={onDelete} />}> */}
+          {/* </Route> */}
+          <Route path="/about" element={<About />}>
+            
+          </Route>
+        </Routes>
+        <Footer />
+      </Router>
     </>
   );
 }

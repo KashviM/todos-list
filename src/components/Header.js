@@ -13,7 +13,7 @@ export default function Header(props) {
     <div>
       <Navbar bg="light" expand="lg">
         <Container fluid>
-          <Navbar.Brand href="#">{props.title}</Navbar.Brand>
+          <Navbar.Brand href="/">{props.title}</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -22,8 +22,8 @@ export default function Header(props) {
               navbarScroll
               
             >
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="#action2">About US</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/about">About US</Nav.Link>
 
             </Nav>
             {props.searchbar?<Form className="d-flex" style={formstyle}>
